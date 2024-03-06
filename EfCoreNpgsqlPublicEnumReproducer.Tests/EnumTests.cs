@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EnumBugReproducer.Tests
 {
@@ -14,10 +15,10 @@ namespace EnumBugReproducer.Tests
         private const string ConnString = "Server=127.0.0.1;Port=5432;Database=postgres;User Id=postgres;Password=password;";
 
         [TestMethod]
-        public void Test()
+        public async Task Test()
         {
             var dbContext = new TestDbContextFactory(ConnString).CreateDbContext<MyContext>();
-            dbContext.Database.Migrate();
+            await EnumAwareDbMigrator.MigrateDbAndReloadTypes(dbContext);
             dbContext.Entities.Add(new DbEntitySubclassOne { Id = Guid.NewGuid() });
             dbContext.Entities.Add(new DbEntitySubclassTwo { Id = Guid.NewGuid() });
             dbContext.SaveChanges();

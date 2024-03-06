@@ -31,8 +31,8 @@ namespace EnumBugReproducer.DAL
             var entityModelBuilder = modelBuilder.Entity<DbEntity>();
             entityModelBuilder.Metadata.SetSchema(SchemaName);
             entityModelBuilder.HasDiscriminator<MyEnum>("my_discriminator")
-        .HasValue<DbEntitySubclassOne>(MyEnum.ValueOne)
-        .HasValue<DbEntitySubclassTwo>(MyEnum.Value2);
+                .HasValue<DbEntitySubclassOne>(MyEnum.ValueOne)
+                .HasValue<DbEntitySubclassTwo>(MyEnum.Value2);
             entityModelBuilder.HasKey(e => e.Id);
             entityModelBuilder.ToTable("entities");
         }
