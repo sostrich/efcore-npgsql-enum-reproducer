@@ -1,5 +1,6 @@
 using EnumBugReproducer.Models.DAL;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace EnumBugReproducer.DAL
 {
@@ -15,7 +16,7 @@ namespace EnumBugReproducer.DAL
         public DbSet<DbEntitySubclassTwo> SubTwoEntities { get; set; }
 
         public MyContext(DbContextOptions<MyContext> options)
-      : base(options)
+        : base(options)
         {
         }
 
@@ -34,11 +35,12 @@ namespace EnumBugReproducer.DAL
         .HasValue<DbEntitySubclassTwo>(MyEnum.Value2);
             entityModelBuilder.HasKey(e => e.Id);
             entityModelBuilder.ToTable("entities");
+        }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.LogTo(Console.WriteLine);
         }
     }
-
-
-
 }
